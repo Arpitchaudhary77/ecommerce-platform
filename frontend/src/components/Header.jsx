@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Menu,
   Search,
@@ -13,58 +12,84 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
+import { useState } from 'react';
+
+import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
 export default function Header() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate =
+    useNavigate();
 
-  const { itemCount } = useCart();
+  const location =
+    useLocation();
 
-  const [mobileOpen, setMobileOpen] =
-    useState(false);
+  const {
+    user,
+  } = useAuth();
 
-  const [search, setSearch] =
-    useState('');
+  const {
+    itemCount,
+  } = useCart();
+
+  const [
+    mobileOpen,
+    setMobileOpen,
+  ] = useState(false);
+
+  const [
+    search,
+    setSearch,
+  ] = useState('');
+
+  const query =
+    new URLSearchParams(
+      location.search
+    );
 
   const currentCategory =
-    new URLSearchParams(location.search)
-      .get('category');
+    query.get(
+      'category'
+    );
 
   const isProductsPage =
-    location.pathname === '/products';
+    location.pathname ===
+    '/products';
 
   const isShopActive =
     isProductsPage &&
     !currentCategory &&
-    !new URLSearchParams(location.search)
-      .get('search');
+    !query.get(
+      'search'
+    );
 
-  function isCategoryActive(slug) {
+  function isCategoryActive(
+    slug
+  ) {
     return (
       isProductsPage &&
-      currentCategory === slug
+      currentCategory ===
+        slug
     );
   }
 
-  function submitSearch(event) {
+  function submitSearch(
+    event
+  ) {
     event.preventDefault();
 
-    const value = search.trim();
+    const value =
+      search.trim();
 
-    if (!value) {
-      navigate('/products');
-    } else {
-      navigate(
-        `/products?search=${encodeURIComponent(value)}`
-      );
-    }
+    navigate(
+      value
+        ? `/products?search=${encodeURIComponent(
+            value
+          )}`
+        : '/products'
+    );
 
     setSearch('');
-    setMobileOpen(false);
-  }
-
-  function closeMobileMenu() {
     setMobileOpen(false);
   }
 
@@ -78,7 +103,9 @@ export default function Header() {
         <Link
           to="/"
           className="brand"
-          onClick={closeMobileMenu}
+          onClick={() =>
+            setMobileOpen(false)
+          }
         >
           <span className="brand-mark">
             N
@@ -91,46 +118,64 @@ export default function Header() {
 
         <form
           className="search-bar desktop-search"
-          onSubmit={submitSearch}
+          onSubmit={
+            submitSearch
+          }
         >
           <Search size={19} />
 
           <input
             value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
+            onChange={(
+              event
+            ) =>
+              setSearch(
+                event.target
+                  .value
+              )
             }
             placeholder="Search products, brands and more"
-            aria-label="Search products"
           />
         </form>
 
         <div className="header-actions">
           <button
             className="icon-button"
-            onClick={() => navigate('/')}
+            onClick={() =>
+              navigate(
+                user
+                  ? '/account'
+                  : '/login'
+              )
+            }
             aria-label="Account"
           >
-            <UserRound size={21} />
+            <UserRound
+              size={21}
+            />
 
             <span className="desktop-only">
-              Account
+              {user
+                ? user.firstName
+                : 'Account'}
             </span>
           </button>
 
           <Link
             className="icon-button bag-button"
             to="/cart"
-            onClick={closeMobileMenu}
             aria-label="Shopping bag"
           >
-            <ShoppingBag size={21} />
+            <ShoppingBag
+              size={21}
+            />
 
             <span className="desktop-only">
               Bag
             </span>
 
-            {itemCount > 0 && (
+            {itemCount >
+              0 && (
               <span className="cart-count">
                 {itemCount}
               </span>
@@ -141,10 +186,10 @@ export default function Header() {
             className="icon-button mobile-menu-button"
             onClick={() =>
               setMobileOpen(
-                (value) => !value
+                (value) =>
+                  !value
               )
             }
-            aria-label="Toggle navigation"
           >
             {mobileOpen ? (
               <X size={22} />
@@ -166,13 +211,11 @@ export default function Header() {
           <Link
             to="/"
             className={`nav-link ${
-              location.pathname === '/'
+              location.pathname ===
+              '/'
                 ? 'active'
                 : ''
             }`}
-            onClick={
-              closeMobileMenu
-            }
           >
             Home
           </Link>
@@ -184,9 +227,6 @@ export default function Header() {
                 ? 'active'
                 : ''
             }`}
-            onClick={
-              closeMobileMenu
-            }
           >
             Shop
           </Link>
@@ -200,9 +240,6 @@ export default function Header() {
                 ? 'active'
                 : ''
             }`}
-            onClick={
-              closeMobileMenu
-            }
           >
             Electronics
           </Link>
@@ -216,9 +253,6 @@ export default function Header() {
                 ? 'active'
                 : ''
             }`}
-            onClick={
-              closeMobileMenu
-            }
           >
             Fashion
           </Link>
@@ -232,9 +266,6 @@ export default function Header() {
                 ? 'active'
                 : ''
             }`}
-            onClick={
-              closeMobileMenu
-            }
           >
             Home & Living
           </Link>
@@ -248,9 +279,6 @@ export default function Header() {
                 ? 'active'
                 : ''
             }`}
-            onClick={
-              closeMobileMenu
-            }
           >
             Fitness
           </Link>
@@ -260,17 +288,23 @@ export default function Header() {
       <div className="mobile-search container">
         <form
           className="search-bar"
-          onSubmit={submitSearch}
+          onSubmit={
+            submitSearch
+          }
         >
           <Search size={19} />
 
           <input
             value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
+            onChange={(
+              event
+            ) =>
+              setSearch(
+                event.target
+                  .value
+              )
             }
             placeholder="Search products..."
-            aria-label="Search products"
           />
         </form>
       </div>

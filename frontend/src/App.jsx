@@ -1,22 +1,35 @@
-import { Link, Route, Routes } from 'react-router-dom';
+import {
+  Link,
+  Route,
+  Routes,
+} from 'react-router-dom';
 
 import Header from './components/Header';
+import ProtectedRoute from './components/ProtectedRoute';
 
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Account from './pages/Account';
 
 function NotFound() {
   return (
     <main className="container state-page">
       <div className="state-card">
-        <span className="eyebrow">404</span>
+        <span className="eyebrow">
+          404
+        </span>
 
-        <h1>Page not found</h1>
+        <h1>
+          Page not found
+        </h1>
 
         <p>
-          The page you're looking for doesn't exist.
+          The page you're looking for
+          doesn't exist.
         </p>
 
         <Link
@@ -36,7 +49,10 @@ export default function App() {
       <Header />
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={<Home />}
+        />
 
         <Route
           path="/products"
@@ -45,13 +61,32 @@ export default function App() {
 
         <Route
           path="/products/:slug"
-          element={<ProductDetails />}
+          element={
+            <ProductDetails />
+          }
         />
 
         <Route
           path="/cart"
           element={<Cart />}
         />
+
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/account"
+            element={<Account />}
+          />
+        </Route>
 
         <Route
           path="*"
@@ -76,8 +111,8 @@ export default function App() {
             </Link>
 
             <p>
-              Thoughtfully selected products for
-              everyday life.
+              Thoughtfully selected products
+              for everyday life.
             </p>
           </div>
 
