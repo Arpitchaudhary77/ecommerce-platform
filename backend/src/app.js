@@ -19,6 +19,9 @@ const addressRoutes =
 const cartRoutes =
   require('./routes/cartRoutes');
 
+const orderRoutes =
+  require('./routes/orderRoutes');
+
 const notFound =
   require('./middleware/notFound');
 
@@ -98,6 +101,11 @@ app.use(
 app.use(
   '/api/cart',
   cartRoutes
+);
+
+app.use(
+  '/api/orders',
+  orderRoutes
 );
 
 app.use(

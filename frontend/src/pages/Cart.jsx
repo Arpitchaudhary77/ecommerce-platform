@@ -262,18 +262,13 @@ export default function Cart() {
             </strong>
           </div>
 
-          <button
+          <Link
+            to="/checkout"
             className="primary-button checkout-button"
-            disabled
           >
             Checkout
             <ArrowRight size={18} />
-          </button>
-
-          <p className="checkout-coming-soon">
-            Secure checkout will be
-            enabled in the next milestone.
-          </p>
+          </Link>
         </aside>
       </div>
     </main>

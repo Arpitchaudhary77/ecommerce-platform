@@ -259,3 +259,13 @@ export function clearServerCart() {
     }
   );
 }
+
+export function createOrder(data) {
+  return request(
+    '/orders',
+    {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }
+  );
+}
